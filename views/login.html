@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+     <header class="header">
+        <div class="header-inner">
+            <div class="logo">Мой Не Сам</div>
+            <nav class="nav">
+                <a href="home.html">Главная</a>
+                <a href="register.html">Регистрация</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="form-card">
+            <h1>Вход</h1>
+
+            {{message}}
+
+            <form method="POST" action="/login">
+                <label>Логин</label>
+                <input type="text" name="login" required>
+
+                <label>Пароль</label>
+                <input type="password" name="password" required>
+
+                <br><br>
+                <button class="btn" type="submit">Войти</button>
+            </form>
+
+            <p>
+                Администратор: <b>adminka</b> / <b>password</b>
+            </p>
+        </section>
+    </main>
+</body>
+</html>
