@@ -1,53 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
-    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
 <body>
     <header class="header">
         <div class="header-inner">
-        <div class="logo">Мой Не Сам</div>
-        <nav class="nav">
-            <a href="home.html">Главная</a>
-            <a href="login.html">Вход</a>
-        </nav>
+            <div class="logo">Мой Не Сам</div>
+
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/login">Вход</a>
+            </nav>
         </div>
     </header>
 
     <main class="container">
         <section class="form-card">
-        <h1>Регистрация</h1>
+            <h1>Регистрация</h1>
 
-        {{message}}
+            {{message}}
 
-        <form method="POST" action="/register">
-            <label>Логин</label>
-            <input type="text" name="login" required>
+            <form method="POST" action="/register">
+                <label>Логин</label>
+                <input type="text" name="login" required>
 
-            <label>Пароль</label>
-            <input type="password" name="password" required>
+                <label>Пароль</label>
+                <input type="password" name="password" required>
 
-            <label>Фамилия</label>
-            <input type="text" name="last_name" required>
+                <label>Фамилия</label>
+                <input type="text" name="last_name" required>
 
-            <label>Имя</label>
-            <input type="text" name="first_name" required>
+                <label>Имя</label>
+                <input type="text" name="first_name" required>
 
-            <label>Отчество</label>
-            <input type="text" name="middle_name">
+                <label>Отчество</label>
+                <input type="text" name="middle_name">
 
-            <label>Телефон</label>
-            <input type="text" name="phone" required>
+                <label>Телефон</label>
+                <input type="text" name="phone" required>
 
-            <label>Email</label>
-            <input type="email" name="email" required>
+                <label>Email</label>
+                <input type="email" name="email" required>
 
-            <button class="btn" type="submit">Зарегистрироваться</button>
-        </form>
+                <button class="btn" type="submit">Зарегистрироваться</button>
+            </form>
+            <div class="login-link">
+                Уже есть аккаунт? <a href="/login">Войти</a>
+            </div>
         </section>
     </main>
 </body>

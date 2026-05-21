@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #111111;
+}
+
+.header {
+    width: 100%;
+    background: #111111;
+    padding: 16px 0;
+}
+
+.header-inner {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    gap: 16px;
+}
+
+.nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav a:hover {
+    color: #1e88ff;
+}
+
+.container {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 420px;
+    background: #f5f8ff;
+    border: 1px solid #d8e4ff;
+    border-radius: 18px;
+    padding: 28px;
+}
+
+.form-card h1 {
+    text-align: center;
+    margin-bottom: 22px;
+    color: #111111;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #111111;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 12px;
+    border: 1px solid #c7d7f5;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #ffffff;
+    color: #111111;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1e88ff;
+}
+
+.btn {
+    margin-top: 8px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: #1e88ff;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #006edc;
+}
+
+.login-link {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 15px;
+    color: #333333;
+}
+
+.login-link a {
+    color: #1e88ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #1e88ff;
+    color: #111111;
+    text-align: center;
+}
