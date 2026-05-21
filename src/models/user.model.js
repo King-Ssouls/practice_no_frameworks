@@ -1,8 +1,22 @@
 const pool = require("../db");
 
+async function findUserByLogin(login) {
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM users
+        WHERE login = $1
+        LIMIT 1
+        `,
+        [login]
+    );
+
+    return result.rows[0] || null;
+}
+
 async function createUser(user) {
     const result = await pool.query(
-        ` 
+        `
         INSERT INTO users
         (
             login,
@@ -31,5 +45,6 @@ async function createUser(user) {
 }
 
 module.exports = {
+    findUserByLogin,
     createUser
 };

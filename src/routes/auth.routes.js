@@ -5,8 +5,16 @@ async function authRoutes(req, res) {
         return authController.showRegister(req, res);
     }
 
+    if (req.method === "GET" && req.url === "/login") {
+        return authController.showLogin(req, res);
+    }
+
     if (req.method === "POST" && req.url === "/register") {
         return authController.register(req, res);
+    }
+
+    if (req.method === "POST" && req.url === "/login") {
+        return authController.login(req, res);
     }
 
     return false;
