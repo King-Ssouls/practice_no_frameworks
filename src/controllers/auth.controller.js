@@ -26,6 +26,7 @@ function showLogin(req, res) {
 
 function logout(req, res) {
     clearCookie(res, "user_id");
+    clearCookie(res, "role");
     redirect(res, "/login");
 }
 
@@ -104,11 +105,15 @@ async function login(req, res) {
     }
 
     if (loginValue === "adminka" && password === "password") {
-        const html = render("admin.html", {
-            login: loginValue
+        setCookie(res, "role", "admin", {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/",
+            sameSite: "Lax"
         });
 
-        return sendHtml(res, html);
+        clearCookie(res, "user_id");
+        return redirect(res, "/admin");
     }
 
     try {
@@ -135,6 +140,13 @@ async function login(req, res) {
             .join(" ");
 
         setCookie(res, "user_id", user.id, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/",
+            sameSite: "Lax"
+        });
+
+        setCookie(res, "role", "user", {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 7,
             path: "/",

@@ -1,3 +1,19 @@
+function appendCookieHeader(res, cookieValue) {
+    const currentHeader = res.getHeader("Set-Cookie");
+
+    if (!currentHeader) {
+        res.setHeader("Set-Cookie", cookieValue);
+        return;
+    }
+
+    if (Array.isArray(currentHeader)) {
+        res.setHeader("Set-Cookie", [...currentHeader, cookieValue]);
+        return;
+    }
+
+    res.setHeader("Set-Cookie", [currentHeader, cookieValue]);
+}
+
 function parseCookies(req) {
     const header = req.headers.cookie || "";
     const cookies = {};
@@ -33,14 +49,11 @@ function setCookie(res, name, value, options = {}) {
         cookieParts.push(`SameSite=${options.sameSite}`);
     }
 
-    res.setHeader("Set-Cookie", cookieParts.join("; "));
+    appendCookieHeader(res, cookieParts.join("; "));
 }
 
 function clearCookie(res, name) {
-    res.setHeader(
-        "Set-Cookie",
-        `${name}=; Path=/; HttpOnly; Max-Age=0`
-    );
+    appendCookieHeader(res, `${name}=; Path=/; HttpOnly; Max-Age=0`);
 }
 
 module.exports = {

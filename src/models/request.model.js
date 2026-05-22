@@ -1,29 +1,68 @@
 const pool = require("../db");
 
-async function createRequest(data) {
+async function findServiceIdByName(name) {
     const result = await pool.query(
         `
-        INSERT INTO requests
+        SELECT id
+        FROM services
+        WHERE name = $1
+        LIMIT 1
+        `,
+        [name]
+    );
+
+    return result.rows[0]?.id || null;
+}
+
+async function findPaymentMethodIdByName(name) {
+    const result = await pool.query(
+        `
+        SELECT id
+        FROM payment_methods
+        WHERE name = $1
+        LIMIT 1
+        `,
+        [name]
+    );
+
+    return result.rows[0]?.id || null;
+}
+
+async function createRequest(data) {
+    const serviceId = await findServiceIdByName(data.service_type);
+    const paymentMethodId = await findPaymentMethodIdByName(data.payment_type);
+
+    if (!serviceId) {
+        throw new Error("Service not found");
+    }
+
+    if (!paymentMethodId) {
+        throw new Error("Payment method not found");
+    }
+
+    const result = await pool.query(
+        `
+        INSERT INTO applications
         (
           user_id,
+          service_id,
+          payment_method_id,
           address,
           contact_phone,
           contact_email,
-          service_type,
-          desired_datetime,
-          payment_type
+          desired_datetime
         )
         VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *
         `,
         [
           data.user_id,
+          serviceId,
+          paymentMethodId,
           data.address,
           data.contact_phone,
           data.contact_email,
-          data.service_type,
-          data.desired_datetime,
-          data.payment_type
+          data.desired_datetime
         ]
     );
 
@@ -33,10 +72,15 @@ async function createRequest(data) {
 async function getRequestsByUserId(userId) {
     const result = await pool.query(
         `
-        SELECT *
-        FROM requests
-        WHERE user_id = $1
-        ORDER BY created_at DESC
+        SELECT
+          applications.*,
+          services.name AS service_type,
+          payment_methods.name AS payment_type
+        FROM applications
+        JOIN services ON services.id = applications.service_id
+        JOIN payment_methods ON payment_methods.id = applications.payment_method_id
+        WHERE applications.user_id = $1
+        ORDER BY applications.created_at DESC
         `,
         [userId]
     );
@@ -48,15 +92,19 @@ async function getAllRequests() {
     const result = await pool.query(
         `
         SELECT
-          requests.*,
+          applications.*,
+          services.name AS service_type,
+          payment_methods.name AS payment_type,
           users.last_name,
           users.first_name,
           users.middle_name,
           users.phone,
           users.email
-        FROM requests
-        JOIN users ON users.id = requests.user_id
-        ORDER BY requests.created_at DESC
+        FROM applications
+        JOIN users ON users.id = applications.user_id
+        JOIN services ON services.id = applications.service_id
+        JOIN payment_methods ON payment_methods.id = applications.payment_method_id
+        ORDER BY applications.created_at DESC
         `
     );
 
@@ -66,7 +114,7 @@ async function getAllRequests() {
 async function updateRequestStatus(id, status, cancelReason) {
     const result = await pool.query(
         `
-        UPDATE requests
+        UPDATE applications
         SET status = $1,
             cancel_reason = $2
         WHERE id = $3
