@@ -8,39 +8,46 @@
 </head>
 <body>
     <header class="header">
-      <div class="header-inner">
-        <div class="logo">Мой Не Сам</div>
-        <nav class="nav">
-          <a href="/">Главная</a>
-          <a href="/logout">Выход</a>
-        </nav>
-      </div>
+        <div class="header-inner">
+            <div class="logo">Мой Не Сам</div>
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/logout">Выход</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="container">
-        <h1>Панель администратора</h1>
+    <main class="page-shell admin-page-shell">
+        <section class="page-top">
+            <div>
+                <h1 class="page-title">Панель администратора</h1>
+                <p class="page-subtitle">Список всех заявок клиентов с контактами, статусами и быстрым обновлением.</p>
+            </div>
+        </section>
 
-        <div class="table-wrapper">
-            <table>
-                  <thead>
-                      <tr>
-                          <th>Фамилия</th>
-                          <th>Имя</th>
-                          <th>Отчество</th>
-                          <th>Контакты</th>
-                          <th>Услуга</th>
-                          <th>Адрес</th>
-                          <th>Дата</th>
-                          <th>Оплата</th>
-                          <th>Статус</th>
-                          <th>Действие</th>
-                      </tr>
-                  </thead>
-                <tbody>
-                    {{requests}}
-                </tbody>
-            </table>
-        </div>
+        <section class="panel-card">
+            <div class="table-wrapper">
+                <table class="data-table admin-table">
+                    <thead>
+                        <tr>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Контакты</th>
+                            <th>Услуга</th>
+                            <th>Адрес</th>
+                            <th>Дата</th>
+                            <th>Оплата</th>
+                            <th>Статус</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{requests}}
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
 </body>
 </html>

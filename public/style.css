@@ -5,9 +5,7 @@
 }
 
 :root {
-    --bg-main: #f5f8ff;
     --bg-card: #eaf0fd;
-    --bg-card-strong: #dfe9ff;
     --border-card: #cfddfb;
     --text-main: #111111;
     --text-soft: #55627a;
@@ -15,7 +13,6 @@
     --brand-dark: #006edc;
     --header-bg: #111111;
     --white: #ffffff;
-    --shadow-soft: none;
 }
 
 body {
@@ -77,11 +74,16 @@ img {
 }
 
 .landing-page,
-.request-page-shell {
+.request-page-shell,
+.page-shell {
     width: 90%;
     max-width: 1140px;
     margin: 0 auto;
     padding: 30px 0 48px;
+}
+
+.admin-page-shell {
+    max-width: 1300px;
 }
 
 .hero {
@@ -91,44 +93,32 @@ img {
     background:
         linear-gradient(90deg, rgba(12, 20, 38, 0.72) 0%, rgba(12, 20, 38, 0.36) 45%, rgba(12, 20, 38, 0.18) 100%),
         url("/media/13_commercial_window_cleaning_city.jpg") center/cover no-repeat;
-    box-shadow: var(--shadow-soft);
 }
 
-.hero-panel {
-    max-width: 420px;
-    padding: 28px;
-    border-radius: 22px;
-    background: rgba(234, 240, 253, 0.94);
-    border: 1px solid rgba(207, 221, 251, 0.95);
-}
-
-.eyebrow {
-    margin-bottom: 10px;
-    color: #0f4fb8;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.hero h1,
-.request-intro h1 {
+.hero h1 {
     font-size: clamp(34px, 5vw, 52px);
     line-height: 1.05;
 }
 
-.hero-text,
-.section-heading p,
-.service-card p,
-.request-intro p,
-.request-preview-card p,
-.request-form-text {
-    color: var(--text-soft);
-    line-height: 1.6;
+.home-hero-content {
+    max-width: 620px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    color: var(--white);
 }
 
-.hero-text {
-    margin-top: 12px;
+.home-hero-text {
+    margin-top: 14px;
+    max-width: 560px;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.7;
+    font-size: 18px;
+}
+
+.home-hero-content .btn {
+    margin-top: auto;
+    align-self: flex-start;
 }
 
 .services-section {
@@ -140,7 +130,6 @@ img {
 }
 
 .section-heading h2,
-.request-preview-card h2,
 .form-card h1,
 .form-card h2 {
     font-size: 30px;
@@ -153,12 +142,11 @@ img {
 }
 
 .service-card,
-.request-preview-card,
-.form-card {
+.form-card,
+.panel-card {
     background: var(--bg-card);
     border: 1px solid var(--border-card);
     border-radius: 22px;
-    box-shadow: var(--shadow-soft);
 }
 
 .service-card {
@@ -275,7 +263,8 @@ textarea:focus {
     border-color: var(--brand);
 }
 
-.message {
+.message,
+.error {
     margin-bottom: 15px;
     padding: 12px;
     border-radius: 10px;
@@ -302,63 +291,10 @@ textarea:focus {
     text-decoration: underline;
 }
 
-.request-intro {
-    margin-bottom: 22px;
-}
-
-.request-intro .eyebrow {
-    font-size: 24px;
-    letter-spacing: 0;
-    text-transform: none;
-    margin-bottom: 6px;
-}
-
-.request-intro h3 {
-    font-size: 20px;
-    font-weight: 600;
+.request-form-text,
+.page-subtitle {
     color: var(--text-soft);
-}
-
-.request-layout {
-    display: grid;
-    grid-template-columns: 340px minmax(0, 1fr);
-    gap: 24px;
-    align-items: start;
-}
-
-.request-preview-card {
-    overflow: hidden;
-}
-
-.request-preview-image {
-    width: 100%;
-    height: 260px;
-    object-fit: cover;
-}
-
-.request-preview-body {
-    padding: 22px;
-}
-
-.request-preview-price {
-    margin-top: 18px;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    border-radius: 16px;
-    background: var(--white);
-    border: 1px solid #c7d7f5;
-}
-
-.request-preview-price span {
-    color: var(--text-soft);
-}
-
-.request-preview-price strong {
-    font-size: 22px;
-    color: #0f4fb8;
+    line-height: 1.6;
 }
 
 .request-form-text {
@@ -400,9 +336,95 @@ textarea:focus {
     margin: 0;
 }
 
+.page-top {
+    margin-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 18px;
+}
+
+.page-title {
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.08;
+}
+
+.page-subtitle {
+    margin-top: 10px;
+    max-width: 700px;
+}
+
+.page-action-btn {
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+.panel-card {
+    padding: 18px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 16px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #d8e3fb;
+    font-size: 15px;
+}
+
+.data-table th {
+    background: #dfe9ff;
+    color: #1d335a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table td.status {
+    min-width: 150px;
+    color: #0f4fb8;
+    font-weight: 700;
+}
+
+.admin-table {
+    min-width: 1180px;
+}
+
+.actions-form {
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.actions-form select,
+.actions-form textarea {
+    margin-bottom: 0;
+    background: var(--white);
+}
+
+.actions-form .btn,
 .request-form-card .btn,
 .service-card .btn {
     width: 100%;
+}
+
+.actions-form .btn {
+    margin-top: 0;
 }
 
 @media (max-width: 980px) {
@@ -410,12 +432,9 @@ textarea:focus {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .request-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .request-preview-card {
-        max-width: 520px;
+    .page-top {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 
@@ -438,10 +457,12 @@ textarea:focus {
         padding: 18px;
     }
 
-    .hero-panel,
-    .form-card,
-    .request-preview-body {
+    .form-card {
         padding: 20px;
+    }
+
+    .panel-card {
+        padding: 16px;
     }
 
     .services-grid,
@@ -451,9 +472,9 @@ textarea:focus {
     }
 
     .section-heading h2,
-    .request-preview-card h2,
+    .form-card h1,
     .form-card h2,
-    .form-card h1 {
+    .page-title {
         font-size: 24px;
     }
 }
