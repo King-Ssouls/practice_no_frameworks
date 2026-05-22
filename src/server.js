@@ -3,17 +3,28 @@ const fs = require("fs");
 const path = require("path");
 
 const authRoutes = require("./routes/auth.routes");
+const requestRoutes = require("./routes/request.routes");
 
 function serveStatic(req, res) {
-    if (req.url === "/style.css") {
+    const url = new URL(req.url, "http://localhost");
+
+    if (url.pathname === "/style.css") {
         const cssPath = path.join(__dirname, "../public/style.css");
-        const css = fs.readFileSync(cssPath);
 
-        res.writeHead(200, {
-            "Content-Type": "text/css; charset=utf-8"
-        });
+        sendFile(res, cssPath);
+        return true;
+    }
 
-        res.end(css);
+    if (url.pathname.startsWith("/media/")) {
+        const mediaRoot = path.resolve(__dirname, "../public/media");
+        const relativePath = url.pathname.replace("/media/", "");
+        const filePath = path.resolve(mediaRoot, relativePath);
+
+        if (!filePath.startsWith(mediaRoot) || !fs.existsSync(filePath)) {
+            return false;
+        }
+
+        sendFile(res, filePath);
         return true;
     }
 
@@ -23,6 +34,12 @@ function serveStatic(req, res) {
 const server = http.createServer(async (req, res) => {
     try {
         if (serveStatic(req, res)) {
+            return;
+        }
+
+        const requestResult = await requestRoutes(req, res);
+
+        if (requestResult !== false) {
             return;
         }
 

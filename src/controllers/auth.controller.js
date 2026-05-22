@@ -1,5 +1,6 @@
 const { createUser, findUserByLogin } = require("../models/user.model");
 const { hashPassword, comparePassword } = require("../utils/auth");
+const { setCookie } = require("../utils/cookies");
 const { render, sendHtml } = require("../utils/render");
 const parseBody = require("../utils/parseBody");
 
@@ -123,6 +124,13 @@ async function login(req, res) {
         const fullName = [user.last_name, user.first_name, user.middle_name]
             .filter(Boolean)
             .join(" ");
+
+        setCookie(res, "user_id", user.id, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/",
+            sameSite: "Lax"
+        });
 
         const html = render("dashboard.html", {
             full_name: fullName || user.login,

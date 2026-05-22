@@ -23,7 +23,26 @@ function sendHtml(res, html) {
     res.end(html);
 }
 
+function redirect(res, url) {
+    res.writeHead(302, {
+        Location: url
+    });
+
+    res.end();
+}
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
 module.exports = {
     render,
-    sendHtml
+    sendHtml,
+    redirect,
+    escapeHtml
 };

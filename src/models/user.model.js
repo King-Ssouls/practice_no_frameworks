@@ -14,6 +14,20 @@ async function findUserByLogin(login) {
     return result.rows[0] || null;
 }
 
+async function findUserById(id) {
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM users
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [id]
+    );
+
+    return result.rows[0] || null;
+}
+
 async function createUser(user) {
     const result = await pool.query(
         `
@@ -46,5 +60,6 @@ async function createUser(user) {
 
 module.exports = {
     findUserByLogin,
+    findUserById,
     createUser
 };
