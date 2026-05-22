@@ -1,7 +1,7 @@
 const { createUser, findUserByLogin } = require("../models/user.model");
 const { hashPassword, comparePassword } = require("../utils/auth");
-const { setCookie } = require("../utils/cookies");
-const { render, sendHtml } = require("../utils/render");
+const { setCookie, clearCookie } = require("../utils/cookies");
+const { render, sendHtml, redirect } = require("../utils/render");
 const parseBody = require("../utils/parseBody");
 
 function sendRegisterMessage(res, message) {
@@ -22,6 +22,11 @@ function showRegister(req, res) {
 function showLogin(req, res) {
     const html = render("login.html");
     sendHtml(res, html);
+}
+
+function logout(req, res) {
+    clearCookie(res, "user_id");
+    redirect(res, "/login");
 }
 
 async function register(req, res) {
@@ -78,6 +83,10 @@ async function register(req, res) {
             );
         }
 
+        return sendRegisterMessage(
+            res,
+            `<p class="message">Произошла ошибка при регистрации</p>`
+        );
     }
 }
 
@@ -142,12 +151,18 @@ async function login(req, res) {
         return sendHtml(res, html);
     } catch (error) {
         console.log(error);
+
+        return sendLoginMessage(
+            res,
+            `<p class="message">Произошла ошибка при входе</p>`
+        );
     }
 }
 
 module.exports = {
     showRegister,
     showLogin,
+    logout,
     register,
     login
 };

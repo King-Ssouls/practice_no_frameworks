@@ -5,7 +5,12 @@ const { createRequest, getRequestsByUserId } = require("../models/request.model"
 
 function isUser(req) {
     const cookies = parseCookies(req);
-    return cookies.role === "user" && cookies.user_id
+    return Boolean(cookies.user_id);
+}
+
+function showHome(req, res) {
+    const html = render("home.html");
+    sendHtml(res, html);
 }
 
 function showRequestForm(req, res) {
@@ -91,6 +96,7 @@ async function dashboard(req, res) {
 }
 
 module.exports = {
+  showHome,
   showRequestForm,
   createNewRequest,
   dashboard

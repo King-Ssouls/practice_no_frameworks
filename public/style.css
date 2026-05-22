@@ -15,7 +15,7 @@
     --brand-dark: #006edc;
     --header-bg: #111111;
     --white: #ffffff;
-    --shadow-soft: 0 18px 45px rgba(30, 85, 167, 0.12);
+    --shadow-soft: none;
 }
 
 body {
@@ -232,7 +232,8 @@ img {
 }
 
 .request-form-card {
-    max-width: none;
+    max-width: 760px;
+    margin: 0 auto;
 }
 
 form {
@@ -303,6 +304,19 @@ textarea:focus {
 
 .request-intro {
     margin-bottom: 22px;
+}
+
+.request-intro .eyebrow {
+    font-size: 24px;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-bottom: 6px;
+}
+
+.request-intro h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-soft);
 }
 
 .request-layout {

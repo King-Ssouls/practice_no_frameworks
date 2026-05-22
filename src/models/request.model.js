@@ -39,7 +39,7 @@ async function getRequestsByUserId(userId) {
         ORDER BY created_at DESC
         `,
         [userId]
-    )
+    );
 
     return result.rows;
 }
@@ -47,16 +47,18 @@ async function getRequestsByUserId(userId) {
 async function getAllRequests() {
     const result = await pool.query(
         `
-        SELECT 
+        SELECT
           requests.*,
-          users.full_name,
+          users.last_name,
+          users.first_name,
+          users.middle_name,
           users.phone,
           users.email
         FROM requests
         JOIN users ON users.id = requests.user_id
         ORDER BY requests.created_at DESC
         `
-    )
+    );
 
     return result.rows;
 }
@@ -71,14 +73,14 @@ async function updateRequestStatus(id, status, cancelReason) {
         RETURNING *
         `,
         [status, cancelReason || null, id]
-    )
+    );
 
-    return result.rows[0]
-  }
+    return result.rows[0];
+}
 
 module.exports = {
     createRequest,
     getRequestsByUserId,
     getAllRequests,
     updateRequestStatus
-}
+};

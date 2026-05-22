@@ -16,11 +16,24 @@ function parseCookies(req) {
     return cookies;
 }
 
-function setCookie(res, name, value) {
-    res.setHeader(
-        "Set-Cookie",
-        `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly`
-    );
+function setCookie(res, name, value, options = {}) {
+    const cookieParts = [`${name}=${encodeURIComponent(value)}`];
+
+    cookieParts.push(`Path=${options.path || "/"}`);
+
+    if (options.httpOnly !== false) {
+        cookieParts.push("HttpOnly");
+    }
+
+    if (options.maxAge) {
+        cookieParts.push(`Max-Age=${options.maxAge}`);
+    }
+
+    if (options.sameSite) {
+        cookieParts.push(`SameSite=${options.sameSite}`);
+    }
+
+    res.setHeader("Set-Cookie", cookieParts.join("; "));
 }
 
 function clearCookie(res, name) {

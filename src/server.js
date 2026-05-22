@@ -3,7 +3,26 @@ const fs = require("fs");
 const path = require("path");
 
 const authRoutes = require("./routes/auth.routes");
+const adminRoutes = require("./routes/admin.routes");
 const requestRoutes = require("./routes/request.routes");
+
+function sendFile(res, filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    const contentTypes = {
+        ".css": "text/css; charset=utf-8",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png",
+    };
+
+    const fileContent = fs.readFileSync(filePath);
+
+    res.writeHead(200, {
+        "Content-Type": contentTypes[ext] || "application/octet-stream"
+    });
+
+    res.end(fileContent);
+}
 
 function serveStatic(req, res) {
     const url = new URL(req.url, "http://localhost");
@@ -40,6 +59,12 @@ const server = http.createServer(async (req, res) => {
         const requestResult = await requestRoutes(req, res);
 
         if (requestResult !== false) {
+            return;
+        }
+
+        const adminResult = await adminRoutes(req, res);
+
+        if (adminResult !== false) {
             return;
         }
 

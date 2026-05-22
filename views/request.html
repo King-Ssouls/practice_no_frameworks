@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Создание заявки</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">
+    <meta charset="UTF-8">
+    <title>Создание заявки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-          <div class="logo">Мой Не Сам</div>
+            <div class="logo">Мой Не Сам</div>
             <nav class="nav">
                 <a href="/">Главная</a>
                 <a href="/dashboard">Мои заявки</a>
@@ -17,5 +17,72 @@
             </nav>
         </div>
     </header>
+
+    <main class="request-page-shell">
+        <section class="request-intro">
+            <h2 class="eyebrow">Оформление услуги</h2>
+            <h3>Заполните форму ниже</h3>
+        </section>
+
+        <section class="form-card request-form-card">
+            <h2>Данные заявки</h2>
+            <p class="request-form-text">Все поля обязательны для заполнения</p>
+
+            {{message}}
+
+            <form method="POST" action="/request">
+                <label for="address">Адрес</label>
+                <textarea id="address" name="address" required></textarea>
+
+                <div class="request-row">
+                    <div>
+                        <label for="contact_phone">Телефон</label>
+                        <input id="contact_phone" type="tel" name="contact_phone" required>
+                    </div>
+
+                    <div>
+                        <label for="contact_email">Email</label>
+                        <input id="contact_email" type="email" name="contact_email" required>
+                    </div>
+                </div>
+
+                <div class="request-row">
+                    <div>
+                        <label for="service_type">Услуга</label>
+                        <select id="service_type" name="service_type" required>
+                            <option value="">Выберите услугу</option>
+                            <option value="Общий клининг">Общий клининг</option>
+                            <option value="Генеральная уборка">Генеральная уборка</option>
+                            <option value="Уборка офиса">Уборка офиса</option>
+                            <option value="Химчистка ковров и мебели">Химчистка ковров и мебели</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="desired_datetime">Дата и время</label>
+                        <input id="desired_datetime" type="datetime-local" name="desired_datetime" required>
+                    </div>
+                </div>
+
+                <fieldset class="payment-fieldset">
+                    <legend>Способ оплаты</legend>
+
+                    <div class="radio-grid">
+                        <label class="radio-card">
+                            <input type="radio" name="payment_type" value="Наличные" required>
+                            <span>Наличные</span>
+                        </label>
+
+                        <label class="radio-card">
+                            <input type="radio" name="payment_type" value="Карта" required>
+                            <span>Карта</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <button class="btn" type="submit">Отправить заявку</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>
