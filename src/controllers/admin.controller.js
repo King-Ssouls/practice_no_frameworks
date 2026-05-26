@@ -2,6 +2,7 @@ const parseBody = require("../utils/parseBody");
 const { parseCookies } = require("../utils/cookies");
 const { render, sendHtml, redirect, escapeHtml } = require("../utils/render");
 const { getAllRequests, updateRequestStatus } = require("../models/request.model")
+const { formatDateTime } = require("../utils/date");
 
 const inProgressStatus = "В работе"
 const finalStatuses = ["Выполнено", "Отменено"]
@@ -69,7 +70,7 @@ async function showAdmin(req, res) {
                     </td>
                     <td>${escapeHtml(item.service_type)}</td>
                     <td>${escapeHtml(item.address)}</td>
-                    <td>${escapeHtml(item.desired_datetime)}</td>
+                    <td>${escapeHtml(formatDateTime(item.desired_datetime))}</td>
                     <td>${escapeHtml(item.payment_type)}</td>
                     <td class="status">
                         ${escapeHtml(item.status)}

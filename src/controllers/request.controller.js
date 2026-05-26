@@ -2,11 +2,47 @@ const parseBody = require("../utils/parseBody");
 const { parseCookies } = require("../utils/cookies");
 const { render, sendHtml, redirect, escapeHtml } = require("../utils/render");
 const { createRequest, getRequestsByUserId } = require("../models/request.model");
+const { formatDateTime } = require("../utils/date");
 const { isValidPhone } = require("../utils/phone");
 
 function isUser(req) {
     const cookies = parseCookies(req);
     return Boolean(cookies.user_id);
+}
+
+function getTodayDateTimeMin() {
+    const today = new Date();
+    const year = String(today.getFullYear());
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T00:00`;
+}
+
+function isValidDesiredDateTime(value) {
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(value ?? ""))) {
+        return false;
+    }
+
+    const selectedDate = new Date(value);
+
+    if (Number.isNaN(selectedDate.getTime())) {
+        return false;
+    }
+
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return selectedDate >= today;
+}
+
+function renderRequestForm(message = "") {
+    return render("request.html", {
+        message,
+        min_desired_datetime: getTodayDateTimeMin()
+    });
 }
 
 function showHome(req, res) {
@@ -19,7 +55,7 @@ function showRequestForm(req, res) {
         return redirect(res, "/login");
     }
 
-    const html = render("request.html");
+    const html = renderRequestForm();
     sendHtml(res, html);
 }
 
@@ -39,18 +75,17 @@ async function createNewRequest(req, res) {
         !body.desired_datetime ||
         !body.payment_type
     ) {
-        const html = render("request.html", {
-            message: `<div class="error">Все поля обязательны для заполнения</div>`
-        });
-
+        const html = renderRequestForm(`<div class="error">Все поля обязательны для заполнения</div>`);
         return sendHtml(res, html);
     }
 
     if (!isValidPhone(body.contact_phone)) {
-        const html = render("request.html", {
-            message: `<div class="error">Телефон должен содержать только 11 цифр</div>`
-        });
+        const html = renderRequestForm(`<div class="error">Телефон должен содержать только 11 цифр</div>`);
+        return sendHtml(res, html);
+    }
 
+    if (!isValidDesiredDateTime(body.desired_datetime)) {
+        const html = renderRequestForm(`<div class="error">Нельзя выбрать дату раньше сегодняшнего дня</div>`);
         return sendHtml(res, html);
     }
 
@@ -88,18 +123,18 @@ async function dashboard(req, res) {
             <tr>
                 <td>${escapeHtml(item.service_type)}</td>
                 <td>${escapeHtml(item.address)}</td>
-                <td>${escapeHtml(item.desired_datetime)}</td>
+                <td>${escapeHtml(formatDateTime(item.desired_datetime))}</td>
                 <td>${escapeHtml(item.payment_type)}</td>
                 <td class="status">${escapeHtml(item.status)}</td>
                 <td>${escapeHtml(item.cancel_reason || "-")}</td>
             </tr>
-          `
-        }).join("")
+          `;
+        }).join("");
     }
 
     const html = render("dashboard.html", {
         requests: rows
-    })
+    });
 
     sendHtml(res, html);
 }
