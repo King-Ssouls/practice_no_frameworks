@@ -1,5 +1,7 @@
 const pool = require("../db");
 
+const FINAL_STATUSES = ["Выполнено", "Отменено"];
+
 async function findServiceIdByName(name) {
     const result = await pool.query(
         `
@@ -118,12 +120,13 @@ async function updateRequestStatus(id, status, cancelReason) {
         SET status = $1,
             cancel_reason = $2
         WHERE id = $3
+          AND status NOT IN ($4, $5)
         RETURNING *
         `,
-        [status, cancelReason || null, id]
+        [status, cancelReason || null, id, ...FINAL_STATUSES]
     );
 
-    return result.rows[0];
+    return result.rows[0] || null;
 }
 
 module.exports = {

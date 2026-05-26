@@ -427,6 +427,19 @@ textarea:focus {
     margin-top: 0;
 }
 
+.actions-form.is-locked select,
+.actions-form.is-locked textarea,
+.actions-form .btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.actions-form-note {
+    color: var(--text-soft);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
 @media (max-width: 980px) {
     .services-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
