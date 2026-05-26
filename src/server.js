@@ -11,8 +11,6 @@ function sendFile(res, filePath) {
     const contentTypes = {
         ".css": "text/css; charset=utf-8",
         ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".png": "image/png",
     };
 
     const fileContent = fs.readFileSync(filePath);
