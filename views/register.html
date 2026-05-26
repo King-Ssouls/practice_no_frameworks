@@ -41,7 +41,7 @@
                 <input type="text" name="middle_name">
 
                 <label>Телефон</label>
-                <input type="text" name="phone" required>
+                <input type="tel" name="phone" inputmode="numeric" pattern="\d{11}" minlength="11" maxlength="11" title="Введите 11 цифр без пробелов и символов" required>
 
                 <label>Email</label>
                 <input type="email" name="email" required>

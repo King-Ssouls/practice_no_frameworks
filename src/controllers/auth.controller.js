@@ -3,6 +3,7 @@ const { hashPassword, comparePassword } = require("../utils/auth");
 const { setCookie, clearCookie } = require("../utils/cookies");
 const { render, sendHtml, redirect } = require("../utils/render");
 const parseBody = require("../utils/parseBody");
+const { isValidPhone } = require("../utils/phone");
 
 function sendRegisterMessage(res, message) {
     const html = render("register.html", { message });
@@ -48,6 +49,13 @@ async function register(req, res) {
         );
     }
 
+    if (!isValidPhone(phone)) {
+        return sendRegisterMessage(
+            res,
+            `<p class="message">Телефон должен содержать только 11 цифр</p>`
+        );
+    }
+
     try {
         const existingUser = await findUserByLogin(login);
 
@@ -61,13 +69,13 @@ async function register(req, res) {
         const passwordHash = await hashPassword(password);
 
         await createUser({
-            login: login,
+            login,
             password_hash: passwordHash,
             last_name: lastName,
             first_name: firstName,
             middle_name: middleName || null,
-            phone: phone,
-            email: email
+            phone,
+            email
         });
 
         return sendRegisterMessage(

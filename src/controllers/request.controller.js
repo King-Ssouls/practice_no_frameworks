@@ -1,7 +1,8 @@
 const parseBody = require("../utils/parseBody");
 const { parseCookies } = require("../utils/cookies");
 const { render, sendHtml, redirect, escapeHtml } = require("../utils/render");
-const { createRequest, getRequestsByUserId } = require("../models/request.model")
+const { createRequest, getRequestsByUserId } = require("../models/request.model");
+const { isValidPhone } = require("../utils/phone");
 
 function isUser(req) {
     const cookies = parseCookies(req);
@@ -15,11 +16,11 @@ function showHome(req, res) {
 
 function showRequestForm(req, res) {
     if (!isUser(req)) {
-        return redirect(res, "/login")
+        return redirect(res, "/login");
     }
 
-    const html = render("request.html")
-    sendHtml(res, html)
+    const html = render("request.html");
+    sendHtml(res, html);
 }
 
 async function createNewRequest(req, res) {
@@ -45,6 +46,14 @@ async function createNewRequest(req, res) {
         return sendHtml(res, html);
     }
 
+    if (!isValidPhone(body.contact_phone)) {
+        const html = render("request.html", {
+            message: `<div class="error">Телефон должен содержать только 11 цифр</div>`
+        });
+
+        return sendHtml(res, html);
+    }
+
     await createRequest({
         user_id: cookies.user_id,
         address: body.address,
@@ -60,7 +69,7 @@ async function createNewRequest(req, res) {
 
 async function dashboard(req, res) {
     if (!isUser(req)) {
-      return redirect(res, "/login");
+        return redirect(res, "/login");
     }
 
     const cookies = parseCookies(req);
@@ -74,30 +83,30 @@ async function dashboard(req, res) {
           </tr>
         `;
     } else {
-      rows = requests.map((item) => {
-          return `
+        rows = requests.map((item) => {
+            return `
             <tr>
-              <td>${escapeHtml(item.service_type)}</td>
-              <td>${escapeHtml(item.address)}</td>
-              <td>${escapeHtml(item.desired_datetime)}</td>
-              <td>${escapeHtml(item.payment_type)}</td>
-              <td class="status">${escapeHtml(item.status)}</td>
-              <td>${escapeHtml(item.cancel_reason || "-")}</td>
+                <td>${escapeHtml(item.service_type)}</td>
+                <td>${escapeHtml(item.address)}</td>
+                <td>${escapeHtml(item.desired_datetime)}</td>
+                <td>${escapeHtml(item.payment_type)}</td>
+                <td class="status">${escapeHtml(item.status)}</td>
+                <td>${escapeHtml(item.cancel_reason || "-")}</td>
             </tr>
-          `;
-      }).join("");
+          `
+        }).join("")
     }
 
     const html = render("dashboard.html", {
-      requests: rows
-    });
+        requests: rows
+    })
 
     sendHtml(res, html);
 }
 
 module.exports = {
-  showHome,
-  showRequestForm,
-  createNewRequest,
-  dashboard
+    showHome,
+    showRequestForm,
+    createNewRequest,
+    dashboard
 };
