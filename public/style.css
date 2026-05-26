@@ -83,7 +83,8 @@ img {
 }
 
 .admin-page-shell {
-    max-width: 1300px;
+    width: 96%;
+    max-width: 1560px;
 }
 
 .hero {
@@ -401,7 +402,7 @@ textarea:focus {
 }
 
 .admin-table {
-    min-width: 1180px;
+    min-width: 1380px;
 }
 
 .actions-form {
